@@ -1,7 +1,6 @@
 package book.system;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.*;
 
 public class RegisterController {
@@ -42,21 +41,30 @@ public class RegisterController {
     }
 
     private void createFileIfNotExists(String username, String password) {
-        String fileName = username + ".txt";
-        File file = new File(fileName);
+    String folderPath = "database"; // Folder name where files will be stored
+    String fileName = folderPath + File.separator + username + ".txt"; // File path including the folder
 
-        if (!file.exists()) {
-            try {
-                FileWriter writer = new FileWriter(fileName);
-                writer.write("Password: " + password);
-                writer.close();
-                System.out.println("File created for user: " + username);
-            } catch (IOException e) {
-                System.out.println("An error occurred while creating the file.");
-                e.printStackTrace();
+    File file = new File(fileName);
+
+    if (!file.exists()) {
+        try {
+            // Ensure that the directory exists, create if it doesn't
+            File directory = new File(folderPath);
+            if (!directory.exists()) {
+                directory.mkdirs(); // Creates the directory and any necessary but nonexistent parent directories
             }
-        } else {
-            System.out.println("File for user " + username + " already exists.");
+
+            FileWriter writer = new FileWriter(fileName);
+            writer.write("Password: " + password);
+            writer.close();
+            System.out.println("File created for user: " + username + " in the 'database' folder");
+        } catch (IOException e) {
+            System.out.println("An error occurred while creating the file.");
+            e.printStackTrace();
         }
-    }
+    } else {
+        System.out.println("File for user " + username + " already exists in the 'database' folder.");
+     }
+  }
+
 }
